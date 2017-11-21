@@ -9,49 +9,49 @@ Repozitorij z gradivi pri predmetu APPR v študijskem letu 2017/18
 Pri projektu bom obravnaval značilnosti avtomobilov v Evropi in kako so se te spreminjale skozi čas. Prav tako bom pogledal kako se je spreminjala razširjenost avtomobilov in katere so bile najbol razširjene znamke v Evropi.
 
 Vira:
- -http://ec.europa.eu/eurostat
- -http://carsalesbase.com/european-car-sales-data/
+- http://ec.europa.eu/eurostat
+- http://carsalesbase.com/european-car-sales-data/
 
 Tabele:
 
 Registracije:
 
- -1.stolpec: Države
- -2.stolpec: Leto
- -3.stolpec: Teža
- -4.stolpec: Število novih registracij
+- 1.stolpec: Države
+- 2.stolpec: Leto
+- 3.stolpec: Teža
+- 4.stolpec: Število novih registracij
 
 Teža avtomobilov:
 
- -1.stolpec: Države
- -2.stolpec: Leto
- -3.stolpec: Teža
- -4.stolpec: Število
+- 1.stolpec: Države
+- 2.stolpec: Leto
+- 3.stolpec: Teža
+- 4.stolpec: Število
 
 Starost avtomobilov:
 
- -1.stolpec: Države
- -2.stolpec: Leto
- -3.stolpec: Starost
- -4.stolpec: Število
+- 1.stolpec: Države
+- 2.stolpec: Leto
+- 3.stolpec: Starost
+- 4.stolpec: Število
 
 Emisije CO2 novih avtomobilov:
 
- -1.stolpec: Države
- -2.stolpec: Leto
- -3.stolpec: Gram CO2 na km
+- 1.stolpec: Države
+- 2.stolpec: Leto
+- 3.stolpec: Gram CO2 na km
 
 Število avtomobilov na 1000 prebivalcev:
 
- -1.stolpec: Države
- -2.stolpec: Leto
- -3.stolpec: Število
+- 1.stolpec: Države
+- 2.stolpec: Leto
+- 3.stolpec: Število
 
 Katere avtomobilske znamke so najbol razširjene:
 
- -1.stolpec: Avtomobilska znamka
- -2.stolpec: leto
- -3.stolpec: Število prodanih avtomobilov
+- 1.stolpec: Avtomobilska znamka
+- 2.stolpec: leto
+- 3.stolpec: Število prodanih avtomobilov
 
 V projektu želim ugotoviti, v katerem obdobju se je zgodila največja rast avtomobilizma v Evropi ter poskusiti napovedati kakšna bo ta rast v prihodnjih letih. Prav tako bom poskusil ugotoviti kakšne značilnosti na avtomobilih so najbolj razširjene, in kakšne značilnosti bodo v prihodnosti najbolj razširjene.
 
