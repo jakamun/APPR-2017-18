@@ -16,41 +16,47 @@ Tabele:
 
 Registracije:
 
-- 1.stolpec: Države
+- 1.stolpec: Država
 - 2.stolpec: Leto
 - 3.stolpec: Teža
 - 4.stolpec: Število novih registracij
 
 Teža avtomobilov:
 
-- 1.stolpec: Države
+- 1.stolpec: Država
 - 2.stolpec: Leto
 - 3.stolpec: Teža
 - 4.stolpec: Število
 
+Vrste goriv:
+- 1.stolpec: Država
+- 2.stolpec: Leto
+- 3.stolpec: Vrsta goriva
+- 4.stolpec: Število 
+
 Starost avtomobilov:
 
-- 1.stolpec: Države
+- 1.stolpec: Država
 - 2.stolpec: Leto
 - 3.stolpec: Starost
 - 4.stolpec: Število
 
 Emisije CO2 novih avtomobilov:
 
-- 1.stolpec: Države
+- 1.stolpec: Država
 - 2.stolpec: Leto
 - 3.stolpec: Gram CO2 na km
 
 Število avtomobilov na 1000 prebivalcev:
 
-- 1.stolpec: Države
+- 1.stolpec: Država
 - 2.stolpec: Leto
 - 3.stolpec: Število
 
 Katere avtomobilske znamke so najbol razširjene:
 
 - 1.stolpec: Avtomobilska znamka
-- 2.stolpec: leto
+- 2.stolpec: Leto
 - 3.stolpec: Število prodanih avtomobilov
 
 V projektu želim ugotoviti, v katerem obdobju se je zgodila največja rast avtomobilizma v Evropi ter poskusiti napovedati kakšna bo ta rast v prihodnjih letih. Prav tako bom poskusil ugotoviti kakšne značilnosti imajo avtomobili danes in kakšne bodo imeli v prihodnjih letih.
