@@ -6,7 +6,7 @@ Repozitorij z gradivi pri predmetu APPR v študijskem letu 2017/18
 
 ## Avtomobilizem v Evropi
 
-Pri projektu bom obravnaval značilnosti avtomobilov v Evropi in kako so se te spreminjale skozi čas. Prav tako bom pogledal kako se je spreminjala razširjenost avtomobilov in katere so bile najbol razširjene znamke v Evropi.
+Pri projektu bom obravnaval značilnosti avtomobilov v Evropi in kako so se te spreminjale skozi čas. Prav tako bom pogledal kako se je spreminjala razširjenost avtomobilov in katere so najbol razširjene znamke v Evropi. Z eurostata bom v csv obliki uvozil podatke o značilnostih avtomobilov v Evropi. Z druge spletne strani(HTML), ki je navedena med viri, pa bom uvozil podatke o tem katere avtomobilske znamke prodajo največ avtomobilov.
 
 Vira:
 - http://ec.europa.eu/eurostat
@@ -53,7 +53,7 @@ Katere avtomobilske znamke so najbol razširjene:
 - 2.stolpec: leto
 - 3.stolpec: Število prodanih avtomobilov
 
-V projektu želim ugotoviti, v katerem obdobju se je zgodila največja rast avtomobilizma v Evropi ter poskusiti napovedati kakšna bo ta rast v prihodnjih letih. Prav tako bom poskusil ugotoviti kakšne značilnosti na avtomobilih so najbolj razširjene, in kakšne značilnosti bodo v prihodnosti najbolj razširjene.
+V projektu želim ugotoviti, v katerem obdobju se je zgodila največja rast avtomobilizma v Evropi ter poskusiti napovedati kakšna bo ta rast v prihodnjih letih. Prav tako bom poskusil ugotoviti kakšne značilnosti imajo avtomobili danes in kakšne bodo imeli v prihodnjih letih.
 
 ## Program
 

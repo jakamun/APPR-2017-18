@@ -1,5 +1,5 @@
 ---
-title: "Poročilo pri predmetu Analiza podatkov s programom R"
+title: "Avtomobilizem v Evropi"
 author: "Jaka Munda"
 output:
   html_document: default
