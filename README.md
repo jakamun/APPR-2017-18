@@ -59,7 +59,9 @@ Katere avtomobilske znamke so najbol razširjene:
 - 2.stolpec: Leto
 - 3.stolpec: Število prodanih avtomobilov
 
-V projektu želim ugotoviti, v katerem obdobju se je zgodila največja rast avtomobilizma v Evropi ter poskusiti napovedati kakšna bo ta rast v prihodnjih letih. Prav tako bom poskusil ugotoviti kakšne značilnosti imajo avtomobili danes in kakšne bodo imeli v prihodnjih letih.
+Plan dela:
+
+V projektu bom pogledal kakšne značilnosti avtomobilov so v posameznih državah in napovedal kašne bodo te značilnosti v prihodnjih letih. Gledal bom v katerih državah vozijo bolj nove avtomobile in v katerih bolj stare, ter napovedal trend za prihodnja leta. Gledal bom tudi kakšne vrste goriv uporabljajo v posameznih državah, ter napovedal katera goriva se bodo v prihodnosti najbol uporabljala. Isto bom storil tudi za težo osebnega vozila. Analiziral bom še katere avtomobilske znamke prodajo največ avtomobilov in napovedal kakšne bo trend v prihodnjih letih.
 
 ## Program
 
