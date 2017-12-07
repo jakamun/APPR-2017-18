@@ -1,5 +1,12 @@
 # 2. faza: Uvoz podatkov
 
+preciscena_teza <- function() {
+  stolpci <- c("Leto", "Drzava", "Enota", "Vrednost", "Fla")
+  teza <- read_csv("podatki/teza.csv", locale=locale(encoding="cp1250"), col_names = stolpci)
+}
+
+
+
 sl <- locale("sl", decimal_mark = ",", grouping_mark = ".")
 
 # Funkcija, ki uvozi občine iz Wikipedije
