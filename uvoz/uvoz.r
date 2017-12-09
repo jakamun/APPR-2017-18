@@ -1,10 +1,30 @@
 # 2. faza: Uvoz podatkov
 
 preciscena_teza <- function() {
-  stolpci <- c("Leto", "Drzava", "Enota", "Vrednost", "Fla")
-  teza <- read_csv("podatki/teza.csv", locale=locale(encoding="cp1250"), col_names = stolpci)
+  stolpci <- c("Leto", "Drzava", "Teza", "Enota", "Vrednost", "Fla")
+  teza <- read_csv("podatki/teza.csv", locale=locale(encoding="cp1250"),
+                   col_names = stolpci, skip=1, na=c(":", ""," ", "-"))
+  teza$Fla <- NULL
+  teza$Enota <- NULL
+  teza <- teza[c(2,1,3,4)]
+  teza <- teza %>% filter(Vrednost != "NA", Leto >= "2000")
+  #teza <- teza %>% drop_na()
+  #anglesko <- c("Less than 1 000 kg", "From 1 000 to 1 249 kg", "From 1 250 to 1 499 kg", "1 500 kg or over")
+  #slovensko <- c("Manj kot 1000 kg", "1000-1249 kg", "1250-1499 kg", "1500 kg in več")
+  #tab1 <- data.frame(ang=anglesko, Enote=slovensko)
+  #tab1$Enote <- as.character(tab1$Enote)
+  #tab1$ang <- as.character(tab1$ang)
+  #zdruzena <- teza %>% inner_join(tab1, c("Teza"="Enote"))
 }
 
+teza <- preciscena_teza()
+
+preciscena_starost <- function() {
+  starost <- read_csv("podatki/starost.csv", locale = locale(encoding="cp1250"), na=c("", " ", "-", ":"))
+  starost <- starost %>% select(Drzava = GEO,Leto = TIME,Starost = AGE,Vrednost = Value) %>%
+    filter(Vrednost != "NA", Leto >= "2000")
+  
+}
 
 
 sl <- locale("sl", decimal_mark = ",", grouping_mark = ".")
