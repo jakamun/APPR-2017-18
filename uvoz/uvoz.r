@@ -59,15 +59,24 @@ goriva <- function() {
                             na=c(""," ","-",":"))
   dizel_bencin <- dizel_bencin %>% select(Leto = TIME, Drzava = GEO, Vrsta_goriva = PROD_NRG, Stevilo=Value) %>%
     filter(Stevilo != "NA", Leto >= 2000)
-  dizel_bencin <- spread(dizel_bencin, Vrsta_goriva, Stevilo)
+  d
   ostala_goriva <- ostala_goriva %>% select(Leto = TIME, Drzava = GEO, Vrsta_goriva = PROD_NRG, Stevilo = Value) %>%
     filter(Leto >= 2000, Stevilo != "NA")
   ostala_goriva$Stevilo <- ostala_goriva$Stevilo * 1000
-  ostala_goriva <- spread(ostala_goriva, Vrsta_goriva, Stevilo)
-  zdruzena <- dizel_bencin %>% inner_join(ostala_goriva, "Drzava")
+  zdruzena <- rbind(ostala_goriva, dizel_bencin)
+}
+goriva <- goriva()
+
+velikost_motorja <- function() {
+  tabela <- read_csv("podatki/velikost_motorja.csv", locale = locale(encoding = "cp1250"), 
+                     na=c(""," ",":","-"))
+  tabela <- tabela %>% select(Drzava = GEO, Leto =TIME, Vrsta_goriva = PROD_NRG, Motor = ENGINE, Vrednost = Value) %>%
+    filter(Leto >= 2000, Vrednost != "NA") 
+  tabela$Vrsta_goriva <- gsub("All Petroleum Products", "Bencin", tabela$Vrsta_goriva)
+  tabela$Vrsta_goriva <- gsub("Diesel", "Dizel", tabela$Vrsta_goriva)
 }
 
-uvozi.alfa <- function() {
+uvozi_alfa <- function() {
   link <- "http://carsalesbase.com/european-car-sales-data/alfa-romeo/"
   stran <- html_session(link) %>% read_html()
   tabela1 <- stran %>% html_nodes(xpath="//table[@class='model-table']") %>%
@@ -127,7 +136,7 @@ znamke <- c(alfa_romeo <- "http://carsalesbase.com/european-car-sales-data/alfa-
             volkswagen <- "http://carsalesbase.com/european-car-sales-data/volkswagen/",
             volvo <- "http://carsalesbase.com/european-car-sales-data/volvo/")
 
-uvoz_znamk <- function() {
+uvoz_znamke <- function() {
   for(i in 1:length(znamke)){
     link <- znamke[i]
     stran <- html_session(link) %>% read_html()
@@ -140,56 +149,6 @@ uvoz_znamk <- function() {
 }
 
 
-#sl <- locale("sl", decimal_mark = ",", grouping_mark = ".")
-
-# Funkcija, ki uvozi občine iz Wikipedije
-uvozi.obcine <- function() {
-  link <- "http://sl.wikipedia.org/wiki/Seznam_ob%C4%8Din_v_Sloveniji"
-  stran <- html_session(link) %>% read_html()
-  tabela <- stran %>% html_nodes(xpath="//table[@class='wikitable sortable']") %>%
-    .[[1]] %>% html_table(dec = ",")
-  for (i in 1:ncol(tabela)) {
-    if (is.character(tabela[[i]])) {
-      Encoding(tabela[[i]]) <- "UTF-8"
-    }
-  }
-  colnames(tabela) <- c("obcina", "povrsina", "prebivalci", "gostota", "naselja",
-                        "ustanovitev", "pokrajina", "regija", "odcepitev")
-  tabela$obcina <- gsub("Slovenskih", "Slov.", tabela$obcina)
-  tabela$obcina[tabela$obcina == "Kanal ob Soči"] <- "Kanal"
-  tabela$obcina[tabela$obcina == "Loški potok"] <- "Loški Potok"
-  for (col in c("povrsina", "prebivalci", "gostota", "naselja", "ustanovitev")) {
-    tabela[[col]] <- parse_number(tabela[[col]], na = "-", locale = sl)
-  }
-  for (col in c("obcina", "pokrajina", "regija")) {
-    tabela[[col]] <- factor(tabela[[col]])
-  }
-  return(tabela)
-}
-
-# Funkcija, ki uvozi podatke iz datoteke druzine.csv
-uvozi.druzine <- function(obcine) {
-  data <- read_csv2("podatki/druzine.csv", col_names = c("obcina", 1:4),
-                    locale = locale(encoding = "Windows-1250"))
-  data$obcina <- data$obcina %>% strapplyc("^([^/]*)") %>% unlist() %>%
-    strapplyc("([^ ]+)") %>% sapply(paste, collapse = " ") %>% unlist()
-  data$obcina[data$obcina == "Sveti Jurij"] <- "Sveti Jurij ob Ščavnici"
-  data <- data %>% melt(id.vars = "obcina", variable.name = "velikost.druzine",
-                        value.name = "stevilo.druzin")
-  data$velikost.druzine <- parse_number(data$velikost.druzine)
-  data$obcina <- factor(data$obcina, levels = obcine)
-  return(data)
-}
 
 
-# Zapišimo podatke v razpredelnico obcine
-obcine <- uvozi.obcine()
 
-# Zapišimo podatke v razpredelnico druzine.
-druzine <- uvozi.druzine(levels(obcine$obcina))
-
-# Če bi imeli več funkcij za uvoz in nekaterih npr. še ne bi
-# potrebovali v 3. fazi, bi bilo smiselno funkcije dati v svojo
-# datoteko, tukaj pa bi klicali tiste, ki jih potrebujemo v
-# 2. fazi. Seveda bi morali ustrezno datoteko uvoziti v prihodnjih
-# fazah.
