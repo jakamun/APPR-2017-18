@@ -111,17 +111,18 @@ Spodnji zemljevid prikazuje stevilo avtomobilov na 1000 prebivalcev. Iz zemljevi
 ggplot() + geom_polygon(data = left_join(evropa, st_na_1000_prebivalcev %>% filter(Leto == 2012),
                                          by = c("SOVEREIGNT" = "Drzava")), 
                         aes(x = long, y = lat, group = group, fill = Stevilo)) + 
-  coord_map(xlim = c(-25, 40), ylim = c(32, 72)) + 
+  coord_map(xlim = c(-25, 40), ylim = c(32, 72)) + scale_fill_continuous(na.value = "white") +
   labs(title="Stevilo avtomobilov \n na 1000 prebivalcev leta 2012",x="",y="") +
   theme(plot.title = element_text(hjust = 0.5))
 ```
 
 Spodnji zemljevid prikazauje emisije CO2 leta 2016. 
 
-```{r zemljevid, echo=FALSE, fig.align='center', fig.cap='Zemljevid emisij v letu 2016'}
+```{r emisije_zemljevid, echo=FALSE, fig.align='center', fig.cap='Zemljevid emisij v letu 2016'}
 ggplot() + geom_polygon(data = left_join(evropa,emisije %>% filter(Leto == 2016),
                                          by = c("SOVEREIGNT" = "Drzava")),
                         aes(x = long, y = lat, group = group, fill = Gram_CO2_na_km)) +
+  scale_fill_continuous(na.value = "white") +
   coord_map(xlim = c(-25, 40), ylim = c(32, 72)) + labs(x="",y="") 
 ```
 

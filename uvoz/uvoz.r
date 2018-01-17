@@ -20,7 +20,7 @@ preciscena_starost <- function() {
   starost <- read_csv("podatki/starost.csv", locale = locale(encoding="cp1250"), na=c("", " ", "-", ":"))
   starost <- starost %>% select(Drzava = GEO,Leto = TIME,Starost = AGE,St_avtomobilov = Value) %>%
     filter(St_avtomobilov != "NA", Leto >= "2000")
-  starost$Drzava <- gsub("Germany (until 1990 former territory of the FRG)","Germany",starost$Drzava)
+  starost$Drzava <- gsub("^Germany.*", "Germany", starost$Drzava)
   starost$Drzava <- gsub("Former Yugoslav Republic of Macedonia, the", "Macedonia", starost$Drzava)
   starost$Starost <- gsub("Less than 2 years", "Mlajsi od 2 let",
                           gsub("From 2 to 5 years", "2-5 let",
@@ -47,7 +47,7 @@ st_na_1000_prebivalcev <- function() {
   st_na_1000_prebivalcev <- st_na_1000_prebivalcev %>% select(Drzava = GEO, Leto = TIME, Stevilo = Value) %>% 
     filter(Stevilo != "NA", Leto >= "2000")
   st_na_1000_prebivalcev$Drzava <- gsub("Former Yugoslav Republic of Macedonia, the", "Macedonia", st_na_1000_prebivalcev$Drzava)
-  st_na_1000_prebivalcev$Drzava <- gsub("Germany (until 1990 former territory of the FRG)", "Germany", st_na_1000_prebivalcev$Drzava)
+  st_na_1000_prebivalcev$Drzava <- gsub("^Germany.*", "Germany", st_na_1000_prebivalcev$Drzava)
   return(st_na_1000_prebivalcev)
 }
 st_na_1000_prebivalcev <- st_na_1000_prebivalcev()
@@ -63,7 +63,7 @@ goriva <- function() {
     filter(Leto >= 2000, St_avtomobilov != "NA")
   ostala_goriva$St_avtomobilov <- ostala_goriva$St_avtomobilov * 1000
   zdruzena <- rbind(ostala_goriva, dizel_bencin)
-  zdruzena$Drzava <- gsub("Germany (until 1990 former territory of the FRG)", "Germany",
+  zdruzena$Drzava <- gsub("^Germany.*", "Germany",
                           gsub("Former Yugoslav Republic of Macedonia, the", "Macedonia", zdruzena$Drzava))
   return(zdruzena)
 }

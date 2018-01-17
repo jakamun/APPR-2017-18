@@ -16,7 +16,8 @@ zemljevid <- ggplot() + geom_polygon(data = left_join(evropa,
                                                        st_na_1000_prebivalcev %>% filter(Leto == 2012),
                                                        by = c("SOVEREIGNT" = "Drzava")),
                                       aes(x = long, y = lat, group = group, fill = Stevilo)) +
-  coord_map(xlim = c(-25, 40), ylim = c(32, 72)) + labs(title="Stevilo avtomobilov \n na 1000 prebivalcev leta 2012",x="",y="") +
+  coord_map(xlim = c(-25, 40), ylim = c(32, 72)) + scale_fill_continuous(na.value = "white") +
+  labs(title="Stevilo avtomobilov \n na 1000 prebivalcev leta 2012",x="",y="") +
   theme(plot.title = element_text(hjust = 0.5))
 
 #Grafi za starost avtomobilov
@@ -32,14 +33,14 @@ starost_baltik <- ggplot(data = starost %>% filter(Drzava == c("Estonia", "Latvi
   theme(plot.title = element_text(hjust = 0.5))
 
 starost1 <- starost %>% filter(Drzava == c("United Kingdom", "Italy", "France",
-                                           "Germany (until 1990 former territory of the FRG)"))
+                                           "Germany"))
 
 graf_starost <- ggplot(data = starost1, aes(x=Leto,y=St_avtomobilov, color = Drzava)) + geom_line() + 
   facet_wrap(~Starost) + 
   labs(title = "Starost avtomobilov", x = "Leto", y = "Stevilo avtomobilov") +
   theme(plot.title = element_text(hjust = 0.5))
 
-starost_nemcija <- ggplot(data = starost %>% filter(Drzava == "Germany (until 1990 former territory of the FRG)"),
+starost_nemcija <- ggplot(data = starost %>% filter(Drzava == "Germany"),
                                                     aes(x=Leto, y=St_avtomobilov, color = Starost)) + geom_path() +
   labs(title = "Starost avtomobilov v Nemčiji", x = "Leto", y = "Stevilo avtomobilov") +
   theme(plot.title = element_text(hjust = 0.5))
@@ -62,8 +63,8 @@ teza_francija <- ggplot(data = teza %>% filter(Drzava == "France"), aes(x = Leto
 zemljevid_emisije <- ggplot() + geom_polygon(data = left_join(evropa, emisije %>% filter(Leto == 2016),
                                                       by = c("SOVEREIGNT" = "Drzava")),
                                      aes(x = long, y = lat, group = group, fill = Gram_CO2_na_km)) +
-  coord_map(xlim = c(-25, 40), ylim = c(32, 72)) + labs(title="Emisije CO2 leta 2016",x="",y="") +
-  theme(plot.title = element_text(hjust = 0.5)) 
+  coord_map(xlim = c(-25, 40), ylim = c(32, 72)) + scale_fill_continuous(na.value = "white") +
+  labs(title="Emisije CO2 leta 2016",x="",y="") + theme(plot.title = element_text(hjust = 0.5)) 
 
 emisije_graf <- ggplot(data = emisije %>% filter(Drzava == c("Spain", "France", "Portugal", "Italy")),
                  aes(x = Drzava, y = Gram_CO2_na_km)) + geom_boxplot() +
@@ -75,7 +76,7 @@ emisije_slovenija <- ggplot(data = emisije %>% filter(Drzava == "Slovenia"), aes
 
 #Vrste motorja
 
-motor_nemcija <- ggplot(data = vrsta_motorja %>% filter(Drzava == "Germany (until 1990 former territory of the FRG)"),
+motor_nemcija <- ggplot(data = vrsta_motorja %>% filter(Drzava == "Germany"),
                         aes(x=Leto, y=Vrednost, color=Vrsta_goriva)) + 
   geom_point() + geom_path() + facet_wrap(~Motor) +
   labs(title = "Velikosti motorjev v Nemciji", y="Stevilo avtomobilov") + 
