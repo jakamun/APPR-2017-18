@@ -59,13 +59,13 @@ goriva <- function() {
     filter(St_avtomobilov != "NA", Leto >= 2000)
   ostala_goriva <- ostala_goriva %>% select(Leto = TIME, Drzava = GEO, Vrsta_goriva = PROD_NRG, St_avtomobilov = Value) %>%
     filter(Leto >= 2000, St_avtomobilov != "NA")
-  ostala_goriva$Stevilo <- ostala_goriva$St_avtomobilov * 1000
+  ostala_goriva$St_avtomobilov <- ostala_goriva$St_avtomobilov * 1000
   zdruzena <- rbind(ostala_goriva, dizel_bencin)
   zdruzena$Drzava <- gsub("Germany (until 1990 former territory of the FRG)", "Germany",
                           gsub("Former Yugoslav Republic of Macedonia, the", "Macedonia", zdruzena$Drzava))
   return(zdruzena)
 }
-#goriva <- goriva()
+goriva <- goriva()
 
 velikost_motorja <- function() {
   tabela <- read_csv("podatki/velikost_motorja.csv", locale = locale(encoding = "cp1250"), 
@@ -81,72 +81,82 @@ velikost_motorja <- function() {
 }
 vrsta_motorja <- velikost_motorja()
 
-znamke <- c(aston_martin <- "http://carsalesbase.com/european-car-sales-data/aston-martin/",
-            audi <- "http://carsalesbase.com/european-car-sales-data/audi/",
-            bentley <- "http://carsalesbase.com/european-car-sales-data/bentley/",
-            bmw <- "http://carsalesbase.com/european-car-sales-data/bmw/",
-            cadillac <- "http://carsalesbase.com/european-car-sales-data/cadillac/",
-            chrysler <- "http://carsalesbase.com/european-car-sales-data/chrysler/",
-            citroen <- "http://carsalesbase.com/european-car-sales-data/citroen/",
-            dacia <- "http://carsalesbase.com/european-car-sales-data/dacia/",
-            dodge <- "http://carsalesbase.com/european-car-sales-data/dodge/",
-            ferrari <- "http://carsalesbase.com/european-car-sales-data/ferrari/",
-            fiat <- "http://carsalesbase.com/european-car-sales-data/fiat/",
-            ford <- "http://carsalesbase.com/european-car-sales-data/ford/",
-            honda <- "http://carsalesbase.com/european-car-sales-data/honda/",
-            hyundai <- "http://carsalesbase.com/european-car-sales-data/hyundai/",
-            jaguar <- "http://carsalesbase.com/european-car-sales-data/jaguar/",
-            jeep <- "http://carsalesbase.com/european-car-sales-data/jeep/",
-            kia <- "http://carsalesbase.com/european-car-sales-data/kia/",
-            lancia <- "http://carsalesbase.com/european-car-sales-data/lancia/",
-            land_rover <- "http://carsalesbase.com/european-car-sales-data/land-rover/",
-            lexus <- "http://carsalesbase.com/european-car-sales-data/lexus/",
-            maserati <- "http://carsalesbase.com/european-car-sales-data/maserati/",
-            mercedes <- "http://carsalesbase.com/european-car-sales-data/mercedes-benz/",
-            mini <- "http://carsalesbase.com/european-car-sales-data/mini/",
-            mitsubishi <- "http://carsalesbase.com/european-car-sales-data/mitsubishi/",
-            nissan <- "http://carsalesbase.com/european-car-sales-data/nissan/",
-            opel <- "http://carsalesbase.com/european-car-sales-data/opel-vauxhall/",
-            peugeot <- "http://carsalesbase.com/european-car-sales-data/peugeot/",
-            porsche <- "http://carsalesbase.com/european-car-sales-data/porsche/",
-            renault <- "http://carsalesbase.com/european-car-sales-data/renault/",
-            saab <- "http://carsalesbase.com/european-car-sales-data/saab/",
-            seat <- "http://carsalesbase.com/european-car-sales-data/seat/",
-            skoda <- "http://carsalesbase.com/european-car-sales-data/skoda/",
-            smart <- "http://carsalesbase.com/european-car-sales-data/smart/",
-            subaru <- "http://carsalesbase.com/european-car-sales-data/subaru/",
-            suzuki <- "http://carsalesbase.com/european-car-sales-data/suzuki/",
-            toyota <- "http://carsalesbase.com/european-car-sales-data/toyota/",
-            volkswagen <- "http://carsalesbase.com/european-car-sales-data/volkswagen/",
-            volvo <- "http://carsalesbase.com/european-car-sales-data/volvo/")
+#znamke <- c(aston_martin <- "http://carsalesbase.com/european-car-sales-data/aston-martin/",
+ #           audi <- "http://carsalesbase.com/european-car-sales-data/audi/",
+#            bentley <- "http://carsalesbase.com/european-car-sales-data/bentley/",
+ #           bmw <- "http://carsalesbase.com/european-car-sales-data/bmw/",
+  #          cadillac <- "http://carsalesbase.com/european-car-sales-data/cadillac/",
+   #         chrysler <- "http://carsalesbase.com/european-car-sales-data/chrysler/",
+  #          citroen <- "http://carsalesbase.com/european-car-sales-data/citroen/",
+#            dacia <- "http://carsalesbase.com/european-car-sales-data/dacia/",
+#            dodge <- "http://carsalesbase.com/european-car-sales-data/dodge/",
+ #           ferrari <- "http://carsalesbase.com/european-car-sales-data/ferrari/",
+  #          fiat <- "http://carsalesbase.com/european-car-sales-data/fiat/",
+   #         ford <- "http://carsalesbase.com/european-car-sales-data/ford/",
+    #        honda <- "http://carsalesbase.com/european-car-sales-data/honda/",
+     #       hyundai <- "http://carsalesbase.com/european-car-sales-data/hyundai/",
+      #      jaguar <- "http://carsalesbase.com/european-car-sales-data/jaguar/",
+       #     jeep <- "http://carsalesbase.com/european-car-sales-data/jeep/",
+        #    kia <- "http://carsalesbase.com/european-car-sales-data/kia/",
+         #   lancia <- "http://carsalesbase.com/european-car-sales-data/lancia/",
+          #  land_rover <- "http://carsalesbase.com/european-car-sales-data/land-rover/",
+           # lexus <- "http://carsalesbase.com/european-car-sales-data/lexus/",
+  #          maserati <- "http://carsalesbase.com/european-car-sales-data/maserati/",
+   #         mercedes <- "http://carsalesbase.com/european-car-sales-data/mercedes-benz/",
+    #        mini <- "http://carsalesbase.com/european-car-sales-data/mini/",
+     #       mitsubishi <- "http://carsalesbase.com/european-car-sales-data/mitsubishi/",
+      #      nissan <- "http://carsalesbase.com/european-car-sales-data/nissan/",
+       #     opel <- "http://carsalesbase.com/european-car-sales-data/opel-vauxhall/",
+        #    peugeot <- "http://carsalesbase.com/european-car-sales-data/peugeot/",
+         #   porsche <- "http://carsalesbase.com/european-car-sales-data/porsche/",
+          #  renault <- "http://carsalesbase.com/european-car-sales-data/renault/",
+           # saab <- "http://carsalesbase.com/european-car-sales-data/saab/",
+            #seat <- "http://carsalesbase.com/european-car-sales-data/seat/",
+  #          skoda <- "http://carsalesbase.com/european-car-sales-data/skoda/",
+   #         smart <- "http://carsalesbase.com/european-car-sales-data/smart/",
+    #        subaru <- "http://carsalesbase.com/european-car-sales-data/subaru/",
+     #       suzuki <- "http://carsalesbase.com/european-car-sales-data/suzuki/",
+      #      toyota <- "http://carsalesbase.com/european-car-sales-data/toyota/",
+       #     volkswagen <- "http://carsalesbase.com/european-car-sales-data/volkswagen/",
+        #    volvo <- "http://carsalesbase.com/european-car-sales-data/volvo/")
 
-znamke2 <- c("Aston Martin", "Audi", "Bentley", "BMW", "Cadillac", "Chrysler", "Citroen",
-             "Dacia", "Dodge", "Ferrari", "Fiat", "Ford", "Honda", "Hyundai", "Jaguar", "Jeep", "Kia",
-             "Lancia", "Land Rover", "Lexus", "Maserati", "Mercedes Benz", "Mini", "Mitsubishi", "Nissan",
-             "Opel", "Peugeot", "Porsche", "Renault", "Saab", "Seat", "Skoda", "Smart", "Subaru", "Suzuki", 
-             "Toyota", "Volkswagen", "Volvo")
+#znamke2 <- c("Aston Martin", "Audi", "Bentley", "BMW", "Cadillac", "Chrysler", "Citroen",
+ #            "Dacia", "Dodge", "Ferrari", "Fiat", "Ford", "Honda", "Hyundai", "Jaguar", "Jeep", "Kia",
+  #           "Lancia", "Land Rover", "Lexus", "Maserati", "Mercedes Benz", "Mini", "Mitsubishi", "Nissan",
+   #          "Opel", "Peugeot", "Porsche", "Renault", "Saab", "Seat", "Skoda", "Smart", "Subaru", "Suzuki", 
+    #         "Toyota", "Volkswagen", "Volvo")
 
 
-zdruzena <- data.frame(Znamka = character(), Leto = integer(), St_prodanih = integer(),"Delez_na_trgu(%)" = integer())
-sl <- locale("sl", decimal_mark = ",", grouping_mark = ".")
+#zdruzena <- data.frame(Znamka = character(), Leto = integer(), St_prodanih = integer(),"Delez_na_trgu(%)" = integer())
+#sl <- locale("sl", decimal_mark = ",", grouping_mark = ".")
 
-for(znamka in 1:length(znamke)) {
-  link <- znamke[znamka]
-  stran <- html_session(link) %>% read_html()
-  tabela1 <- stran %>% html_nodes(xpath="//table[@class='model-table']") %>%
-    .[[2]] %>% html_table(dec = ",")
-  colnames(tabela1) <- c("Leto", "St_prodanih", "Delez_na_trgu(%)")
-  tabela1 <- tabela1[-c(1),]
-  tabela1$Znamka <- rep(znamke2[znamka],length(tabela1$Leto))
-  tabela1 <- tabela1[order(tabela1$Leto),]
-  tabela1 <- tabela1[c(4,1,2,3)]
-  for (col in c("Leto", "St_prodanih","Delez_na_trgu(%)")) {
-    tabela1[[col]] <- parse_number(tabela1[[col]], na = "-", locale = sl)
-  }
-  zdruzena <- rbind(zdruzena, tabela1)
-}
+#for(znamka in 1:length(znamke)) {
+#  link <- znamke[znamka]
+#  stran <- html_session(link) %>% read_html()
+ # tabela1 <- stran %>% html_nodes(xpath="//table[@class='model-table']") %>%
+  #  .[[2]] %>% html_table(dec = ",")
+  #colnames(tabela1) <- c("Leto", "St_prodanih", "Delez_na_trgu(%)")
+  #tabela1 <- tabela1[-c(1),]
+#  tabela1$Znamka <- rep(znamke2[znamka],length(tabela1$Leto))
+ # tabela1 <- tabela1[order(tabela1$Leto),]
+  #tabela1 <- tabela1[c(4,1,2,3)]
+  #for (col in c("Leto", "St_prodanih","Delez_na_trgu(%)")) {
+   # tabela1[[col]] <- parse_number(tabela1[[col]], na = "-", locale = sl)
+  #}
+  #zdruzena <- rbind(zdruzena, tabela1)
+#}
 
-View(zdruzena)
+#View(zdruzena)
+#write_csv(zdruzena, "podatki/znamke.csv")
+
+# z interneta sem pobral tabele in jih vse združil
+#v eno tabelo in to tabelo shranil v mapo podatki pod imenom znamke.csv
+
+znamke <- read_csv("podatki/znamke.csv", locale = locale(encoding = "cp1250"))
+
+
+
+
 
 
 

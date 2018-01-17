@@ -7,7 +7,6 @@ output:
     includes:
       in_header: lib/styles.sty
     latex_engine: xelatex
-runtime: shiny
 ---
 
 ```{r setup, echo=FALSE, results='hide', message=FALSE}
@@ -21,7 +20,7 @@ source("lib/libraries.r", encoding = "UTF-8")
 
 # Izbira teme
 
-Za vzorec bomo prikazali nekaj podatkov o slovenskih občinah.
+V projektu bom obravnaval značilnosti avtomobilizma v Evropi in napovedal trende avtomobilizma za prihodnjih nekaj let. Pri tem bom obravnaval starost, težo, velikost motorjev, koliko emisij izpustijo v okolje ter kakšne vrste goriv uporabljajo. Prav tako bom pogledal razširjenost avtomobilov in avtomobilskih znamk v Evropi ter kakšna bo ta v prihodnosti.
 
 ***
 
@@ -30,27 +29,56 @@ Za vzorec bomo prikazali nekaj podatkov o slovenskih občinah.
 ```{r uvoz, echo=FALSE, message=FALSE}
 source("uvoz/uvoz.r", encoding = "UTF-8")
 ```
+Podatke sem uvozil v obliki CSV z erostata ter v obliki HTML z http://carsalesbase.com/european-car-sales-data/.
+Podatke imam v večih razpredelnicah v obliki *tidy data*.
 
-Uvozili smo podatke o občinah v obliki CSV s statističnega urada ter v obliki HTML
-z Wikipedije. Podatke imamo v dveh razpredelnicah v obliki *tidy data*.
+Velikost motorja - podatki o velikostih motorjev v avtomobilih po državah
 
-1. `druzine` - podatki o družinah za vsako občino
-  - `obcina` - spremenljivka: ime občine (neurejen faktor),
-  - `velikost.druzine` - spremenljivka: število otrok v družini (število: 1, 2, 3 ali 4, kjer zadnja vrednost pomeni 4 ali več),
-  - `stevilo.druzin` - meritev: število družin z ustreznim številom otrok v ustrezni občini (število).
+- 1.stolpec: Država - spremenljivka
+- 2.stolpec: Leto - spremenljivka
+- 3.stolpec: Vrsta goriva - spremenljivka: dizel ali bencin
+- 4.stolpec: Velikost motorja - spremenljivka: 4 različne velikosti motorjev
+- 5.stolpec: Število - meritev
 
-2. `obcine` - podatki o občinah
-  - `obcina` - spremenljivka: ime občine (neurejen faktor),
-  - `povrsina` - meritev: površina občine v km$^2$ (število),
-  - `prebivalci` - meritev: prebivalstvo občine (število),
-  - `gostota` - meritev: število prebivalcev na km$^2$ (število),
-  - `naselja` - meritev: število naselij v občini (število),
-  - `ustanovitev` - meritev: leto ustanovitve občine (število),
-  - `pokrajina` - meritev: pokrajina, ki ji občina pripada (neurejen faktor),
-  - `regija` - meritev: regija, ki ji občina pripada (neurejen faktor),
-  - `odcepitev` - meritev: podatki o občinah, od katerih se je občina odcepila (besedilo).
+Teža avtomobilov - podatki o teži avtomobilov
 
-**Opomba**: da bi razpredelnica `obcine` res bila v obliki *tidy data*, bi morali odstraniti stolpec `gostota` (saj je izpeljan iz stolpcev `povrsina` in `prebivalci`), podatke o pokrajinah pa bi morali premakniti v drugo razpredelnico, saj nekatere občine pripadajo dvema pokrajinama. Podobno bi morali narediti tudi s stolpcem `odcepitev`.
+- 1.stolpec: Država - spremenljivka
+- 2.stolpec: Leto - spremenljivka
+- 3.stolpec: Teža - spremenljivka: 4 razredi za težo
+- 4.stolpec: Število - meritev
+
+Vrste goriv - podatki o tem kakšne vrste goriva uporabljajo v posameznih državah
+- 1.stolpec: Država - spremenljivka
+- 2.stolpec: Leto - spremenljivka
+- 3.stolpec: Vrsta goriva - spremenljivka: 5 različnih vrst goriva obravnavam
+- 4.stolpec: Število - meritev
+
+Starost avtomobilov - podatki o starostih avtomobilov po državah
+
+- 1.stolpec: Država - spremenljivka
+- 2.stolpec: Leto - spremenljivka
+- 3.stolpec: Starost - spremenljivka: 4 starostni razredi
+- 4.stolpec: Število - meritev
+
+Emisije CO2 novih avtomobilov - podatki o emisijah CO2 po posameznih državah
+
+- 1.stolpec: Država - spremenljivka
+- 2.stolpec: Leto - spremenljivka
+- 3.stolpec: Gram CO2 na km - meritev
+
+Število avtomobilov na 1000 prebivalcev - podatki o razširjenosti avtomobilov po evropskih državah
+
+- 1.stolpec: Država - spremenljivka
+- 2.stolpec: Leto - spremenljvka
+- 3.stolpec: Število - meritev: število avtomobilov na 1000 prebivalcev
+
+Avtomobilske znamke - podatki o prodajanosti posameznih avtomobilskih znamk
+
+- 1.stolpec: Avtomobilska znamka - spremenljivka
+- 2.stolpec: Leto - spremenljivka
+- 3.stolpec: Število prodanih avtomobilov - meritev
+- 4.stolpec: Delež na trgu - meritev: delež prodanih avtomobilov na trgu
+
 
 Spodnji graf prikazuje porazdelitev števila naselij v občinah.
 
@@ -67,6 +95,12 @@ ggplot(obcine, aes(x = naselja)) + geom_histogram() +
 source("vizualizacija/vizualizacija.r", encoding = "UTF-8")
 ```
 
+
+
+
+
+
+
 Spodnji zemljevid prikazuje povprečno velikost družine za vsako občino.
 
 ```{r zemljevid, echo=FALSE, fig.align='center', fig.cap='Zemljevid povprečnega števila otrok v družini'}
@@ -78,26 +112,4 @@ ggplot() + geom_polygon(data = left_join(zemljevid, povprecja, by = c("OB_UIME" 
 
 ***
 
-# Napredna analiza podatkov
 
-```{r analiza, echo=FALSE, message=FALSE}
-source("analiza/analiza.r", encoding = "UTF-8")
-```
-
-Spodnji graf prikazuje povezavo med številom naselij in površino občine.
-
-```{r graf, echo=FALSE, fig.align='center', fig.cap='Povezava med številom naselij in površino občine'}
-ggplot(inner_join(obcine, data.frame(obcina = names(skupine),
-                                     skupina = factor(skupine)), by = "obcina")
-, aes(x = povrsina, y = naselja, color = skupina, size = prebivalci/1000)) + geom_point() +
-  ggtitle("Število naselij glede na površino občine") +
-  xlab(expression("Površina (km"^2 * ")")) + ylab("Št. naselij") +
-  guides(color = guide_legend(title = "Skupina"),
-         size = guide_legend(title = "Prebivalci (* 1000)"))
-```
-
-***
-
-```{r shiny, echo = FALSE}
-shinyAppDir("shiny", options=list(width="100%", height=600))
-```
