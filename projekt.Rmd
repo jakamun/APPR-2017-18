@@ -80,13 +80,6 @@ Avtomobilske znamke - podatki o prodajanosti posameznih avtomobilskih znamk
 - 4.stolpec: Delež na trgu - meritev: delež prodanih avtomobilov na trgu
 
 
-Spodnji graf prikazuje porazdelitev števila naselij v občinah.
-
-```{r histogram, echo=FALSE, message=FALSE, fig.align='center', fig.cap='Histogram števila naselij v občinah'}
-ggplot(obcine, aes(x = naselja)) + geom_histogram() +
-  ggtitle("Pogostost števila naselij") + xlab("Število naselij") + ylab("Število občin")
-```
-
 ***
 
 # Analiza in vizualizacija podatkov
