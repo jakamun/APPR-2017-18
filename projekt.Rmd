@@ -26,7 +26,7 @@ V projektu bom obravnaval značilnosti avtomobilizma v Evropi in napovedal trend
 
 # Obdelava, uvoz in čiščenje podatkov
 
-```{r uvoz, echo=FALSE, message=FALSE}
+```{r uvoz, echo=FALSE, message=FALSE,warning=FALSE}
 source("uvoz/uvoz.r", encoding = "UTF-8")
 ```
 Podatke sem uvozil v obliki CSV z erostata ter v obliki HTML z http://carsalesbase.com/european-car-sales-data/.
