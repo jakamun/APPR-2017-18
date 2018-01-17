@@ -94,21 +94,44 @@ ggplot(obcine, aes(x = naselja)) + geom_histogram() +
 ```{r vizualizacija, echo=FALSE, message=FALSE, warning=FALSE}
 source("vizualizacija/vizualizacija.r", encoding = "UTF-8")
 ```
+V vizualizaciji sem se nnajprej posvetil avtomobilskim znamkam in hitro prišel do sklepa, da avtomobilske znamke, kot so Volkswagen in Citroen prodajo bistveno več avtomobilov na letni ravni, kot pa znamke tipa Mercedes Benz, katerih avtomobili so veliko dražji. Sklepam da razlog za tako razliko tiči ravno v ceni. Dodajam še graf v katerem se vidijo te razlike.
 
+print(graf_primerjava)
 
+Pri obravnavi starosti avtomobilov sem ugotovil da v Evropi prevladujejo starejši avtomobili, od 5 let naprej. 
+To se prikazal z grafom nemčije.
 
+print(starost_nemcija)
 
+Za tezo avtomobilov sem ugotovil da so v preteklosti prevladovali lažžji avtomobili(lazji od 1000 kg), vendar se je to s časom spremenilo tako da danes prevladujejo srednje težki avtomobili(med tono in tono in pol). Prav tako se je dvignilo število najtežjih avtomobilov teh je namreč enako kot tistih lažjih. Dvigovanje teže avtomobilov se mi zdi logično saj so sodobni avtomobili vedno bolje opremljeni, kar daje dodatno težo avtomobilu. 
+Dodajam graf Francije, kjer se ta trend zelo dobro vidi. 
 
+print(teza_francija)
 
+Pri anlizi goriv sem ugotovil, da sta bencin in dizel še vedno najbol uporabljani vrsti goriva medtem ko so alternativne vrste energije zelo nerazširjene.
 
-Spodnji zemljevid prikazuje povprečno velikost družine za vsako občino.
+print(goriva_sever)
 
-```{r zemljevid, echo=FALSE, fig.align='center', fig.cap='Zemljevid povprečnega števila otrok v družini'}
-ggplot() + geom_polygon(data = left_join(zemljevid, povprecja, by = c("OB_UIME" = "obcina")),
-                        aes(x = long, y = lat, group = group, fill = povprecje)) +
-  ggtitle("Povprečno število otrok v družini") + xlab("") + ylab("") +
-  guides(fill = guide_colorbar(title = "Povprečje"))
+Spodnji zemljevid prikazuje stevilo avtomobilov na 1000 prebivalcev. Iz zemljevida vidimo da imajo vzhodne in jogovhodne evropske države manše število avtomobilov. Menim da je temu tako, ker so te države manj razvite od zahodno evropskih držav in imajo prebivalci teh držav manj denarja in si posledično ne morejo toliko privoščit, kot ljudje, ki živijo na zahodu Evrope. 
+
+```{r zemljevid, echo=FALSE, fig.align='center', fig.cap='Zemljevid avtomobilov na 1000 prebivalcev'}
+ggplot() + geom_polygon(data = left_join(evropa, st_na_1000_prebivalcev %>% filter(Leto == 2012),
+                                         by = c("SOVEREIGNT" = "Drzava")), 
+                        aes(x = long, y = lat, group = group, fill = Stevilo)) + 
+  coord_map(xlim = c(-25, 40), ylim = c(32, 72)) + 
+  labs(title="Stevilo avtomobilov \n na 1000 prebivalcev leta 2012",x="",y="") +
+  theme(plot.title = element_text(hjust = 0.5))
 ```
+
+Spodnji zemljevid prikazauje emisije CO2 leta 2016. 
+
+```{r zemljevid, echo=FALSE, fig.align='center', fig.cap='Zemljevid emisij v letu 2016'}
+ggplot() + geom_polygon(data = left_join(evropa,emisije %>% filter(Leto == 2016),
+                                         by = c("SOVEREIGNT" = "Drzava")),
+                        aes(x = long, y = lat, group = group, fill = Gram_CO2_na_km)) +
+  coord_map(xlim = c(-25, 40), ylim = c(32, 72)) + labs(x="",y="") 
+```
+
 
 ***
 

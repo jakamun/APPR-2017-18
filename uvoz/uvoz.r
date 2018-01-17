@@ -46,9 +46,11 @@ st_na_1000_prebivalcev <- function() {
                                      na=c(""," ","-",":"))
   st_na_1000_prebivalcev <- st_na_1000_prebivalcev %>% select(Drzava = GEO, Leto = TIME, Stevilo = Value) %>% 
     filter(Stevilo != "NA", Leto >= "2000")
+  st_na_1000_prebivalcev$Drzava <- gsub("Former Yugoslav Republic of Macedonia, the", "Macedonia", st_na_1000_prebivalcev$Drzava)
+  st_na_1000_prebivalcev$Drzava <- gsub("Germany (until 1990 former territory of the FRG)", "Germany", st_na_1000_prebivalcev$Drzava)
   return(st_na_1000_prebivalcev)
 }
-st_avtomobilov_na_1000_prebivalcev <- st_na_1000_prebivalcev()
+st_na_1000_prebivalcev <- st_na_1000_prebivalcev()
 
 goriva <- function() {
   dizel_bencin <- read_csv("podatki/dizel_in_bencin.csv", locale = locale(encoding = "cp1250"),

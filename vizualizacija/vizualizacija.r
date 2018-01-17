@@ -10,17 +10,14 @@ evropa <- uvozi.zemljevid("http://www.naturalearthdata.com/http//www.naturaleart
   pretvori.zemljevid() %>% 
   filter(CONTINENT == "Europe" | SOVEREIGNT %in% c("Turkey", "Cyprus") & SOVEREIGNT != "Russia",long > -30)
 
-
-
 #Grafi za stevilo avtomobilov na 1000 prebivalcev
 
-ggplot() + geom_polygon(data = evropa, aes(x = long, y = lat,
-                                           group = group, fill = id)) +
-  guides(fill = FALSE)
-
-
-
-
+zemljevid <- ggplot() + geom_polygon(data = left_join(evropa, 
+                                                       st_na_1000_prebivalcev %>% filter(Leto == 2012),
+                                                       by = c("SOVEREIGNT" = "Drzava")),
+                                      aes(x = long, y = lat, group = group, fill = Stevilo)) +
+  coord_map(xlim = c(-25, 40), ylim = c(32, 72)) + labs(title="Stevilo avtomobilov \n na 1000 prebivalcev leta 2012",x="",y="") +
+  theme(plot.title = element_text(hjust = 0.5))
 
 #Grafi za starost avtomobilov
 
@@ -33,8 +30,19 @@ starost_baltik <- ggplot(data = starost %>% filter(Drzava == c("Estonia", "Latvi
             aes(x=Leto,y=St_avtomobilov, color = Drzava)) + geom_line() + facet_wrap(~Starost) + 
   labs(title = "Starost avtomobilov v baltskih drzavah", x = "Leto", y = "Stevilo avtomobilov") +
   theme(plot.title = element_text(hjust = 0.5))
-print(g)
-print(starost_baltik)
+
+starost1 <- starost %>% filter(Drzava == c("United Kingdom", "Italy", "France",
+                                           "Germany (until 1990 former territory of the FRG)"))
+
+graf_starost <- ggplot(data = starost1, aes(x=Leto,y=St_avtomobilov, color = Drzava)) + geom_line() + 
+  facet_wrap(~Starost) + 
+  labs(title = "Starost avtomobilov", x = "Leto", y = "Stevilo avtomobilov") +
+  theme(plot.title = element_text(hjust = 0.5))
+
+starost_nemcija <- ggplot(data = starost %>% filter(Drzava == "Germany (until 1990 former territory of the FRG)"),
+                                                    aes(x=Leto, y=St_avtomobilov, color = Starost)) + geom_path() +
+  labs(title = "Starost avtomobilov v Nemčiji", x = "Leto", y = "Stevilo avtomobilov") +
+  theme(plot.title = element_text(hjust = 0.5))
 
 #grafi za tezo
 
@@ -44,12 +52,18 @@ sosednje_drzave <- ggplot(data = teza %>% filter(Drzava == c("Hungary", "Croatia
   labs(title = "Teza avtomobilov \n v sosednjih drzavah", x = "Leto", y = "Stevilo avtomobilov") +
   theme(plot.title = element_text(hjust = 0.5))
 
-spanija <- ggplot(data = teza %>% filter(Drzava == "Spain"), aes(x = Leto, y = St_avtomobilov, col = Teza)) +
+teza_francija <- ggplot(data = teza %>% filter(Drzava == "France"), aes(x = Leto, y = St_avtomobilov, col = Teza)) +
   geom_line() +
   labs(title = "Teza avtomobilov v Spaniji", x = "Leto", y = "Stevilo avtomobilov") +
   theme(plot.title = element_text(hjust = 0.5))
 
 #emisije
+
+zemljevid_emisije <- ggplot() + geom_polygon(data = left_join(evropa, emisije %>% filter(Leto == 2016),
+                                                      by = c("SOVEREIGNT" = "Drzava")),
+                                     aes(x = long, y = lat, group = group, fill = Gram_CO2_na_km)) +
+  coord_map(xlim = c(-25, 40), ylim = c(32, 72)) + labs(title="Emisije CO2 leta 2016",x="",y="") +
+  theme(plot.title = element_text(hjust = 0.5)) 
 
 emisije_graf <- ggplot(data = emisije %>% filter(Drzava == c("Spain", "France", "Portugal", "Italy")),
                  aes(x = Drzava, y = Gram_CO2_na_km)) + geom_boxplot() +
@@ -66,14 +80,22 @@ motor_nemcija <- ggplot(data = vrsta_motorja %>% filter(Drzava == "Germany (unti
   geom_point() + geom_path() + facet_wrap(~Motor) +
   labs(title = "Velikosti motorjev v Nemciji", y="Stevilo avtomobilov") + 
   theme(plot.title = element_text(hjust = 0.5))
-print(motor_nemcija)
+
 # vrste goriva
 
 goriva_sever <- ggplot(data = goriva %>% filter(Drzava ==
                                                       c("Ireland", "United Kingdom", "Sweden", 
-                                                        "Finland", "Norway", "Iceland")), 
-                           aes(x=Leto, y=St_avtomobilov, color=Drzava)) + geom_line() + facet_wrap(~Vrsta_goriva) +
+                                                        "Finland", "Norway")), 
+                           aes(x=Leto, y=St_avtomobilov, color=Drzava)) + geom_point() + facet_wrap(~Vrsta_goriva) +
   labs(title = "Vrste goriv \n v severnih državah Evrope", x = "Leto", y = "Stevilo avtomobilov") + 
+  theme(plot.title = element_text(hjust = 0.5))
+
+goriva1 <- goriva %>% filter(Vrsta_goriva == c("Electrical Energy", "LPG", "Natural Gas", "Other products"),
+                             Drzava == c("Netherlands", "Sweden", "Denmark", "Belgium"))
+
+alternativna_goriva <- ggplot(data = goriva1, aes(x=Leto, y=St_avtomobilov, color=Drzava)) + 
+  geom_point() + facet_wrap(~Vrsta_goriva) + 
+  labs(title = "Vrste goriv", x = "Leto", y = "Stevilo avtomobilov") + 
   theme(plot.title = element_text(hjust = 0.5))
 
 goriva_islandija <- ggplot(data = goriva %>% filter(Drzava == "Iceland"),
@@ -89,7 +111,30 @@ goriva_slovenija <- ggplot(data = goriva %>% filter(Drzava == "Slovenia"),
   theme(plot.title = element_text(hjust = 0.5))
 
 
+#Avtomobilske znamke
 
+drage_znamke <- ggplot(data = znamke %>% filter(Leto >= 2000, 
+                                                Znamka == c("Aston Martin", "Audi", "BMW", "Jaguar", "Mercedes Benz")),
+                      aes(x=Leto, y = St_prodanih, color = Znamka)) + geom_point() + geom_line() + 
+  labs(title = "Najbol prodajane drage znamke", y = "Stevilo prodanih avtomobilov", x = "Leto") + 
+  theme(plot.title = element_text(hjust = 0.5))
+
+ne_tako_drage_znamke <- ggplot(data = znamke %>% filter(Leto >= 2000, 
+                                                        Znamka == c("Opel", "Fiat", "Ford",
+                                                                    "Kia", "Citroen", "Volkswagen", "Renault")),
+                       aes(x=Leto, y = St_prodanih, color = Znamka)) + geom_point() + geom_line() + 
+  labs(title = "Najbol prodajane cenejše znamke", y = "Stevilo prodanih avtomobilov", x = "Leto") + 
+  theme(plot.title = element_text(hjust = 0.5))
+
+
+znamke1 <- znamke
+znamke1$`Delez_na_trgu(%)` <- NULL
+
+graf_primerjava <- ggplot(data = znamke1 %>% filter(Leto >= 2000, 
+                                                   Znamka == c("Mercedes Benz", "Volkswagen", "Ford","Peugeot","Audi")),
+                          aes(x=Znamka, y = St_prodanih)) + geom_boxplot() + 
+  labs(title = "Najbol prodajane avtomobilske znamke", y = "Stevilo prodanih avtomobilov", x = "Avtomobilska znamka") + 
+  theme(plot.title = element_text(hjust = 0.5))
 
 
 
