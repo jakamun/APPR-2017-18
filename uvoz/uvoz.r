@@ -39,7 +39,7 @@ preciscene_emisije <- function() {
   emisije$Leto <- as.integer(emisije$Leto)
   return(emisije)
 }
-emisije <- preciscene_emisije()
+#emisije <- preciscene_emisije()
 
 st_na_1000_prebivalcev <- function() {
   st_na_1000_prebivalcev <- read_csv("podatki/st_na_1000_prebivalcev.csv", locale = locale(encoding = "cp1250"),

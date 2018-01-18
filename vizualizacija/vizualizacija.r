@@ -60,19 +60,19 @@ teza_francija <- ggplot(data = teza %>% filter(Drzava == "France"), aes(x = Leto
 
 #emisije
 
-zemljevid_emisije <- ggplot() + geom_polygon(data = left_join(evropa, emisije %>% filter(Leto == 2016),
-                                                      by = c("SOVEREIGNT" = "Drzava")),
-                                     aes(x = long, y = lat, group = group, fill = Gram_CO2_na_km)) +
-  coord_map(xlim = c(-25, 40), ylim = c(32, 72)) + scale_fill_continuous(na.value = "white") +
-  labs(title="Emisije CO2 leta 2016",x="",y="") + theme(plot.title = element_text(hjust = 0.5)) 
+#zemljevid_emisije <- ggplot() + geom_polygon(data = left_join(evropa, emisije %>% filter(Leto == 2016),
+ #                                                     by = c("SOVEREIGNT" = "Drzava")),
+  #                                   aes(x = long, y = lat, group = group, fill = Gram_CO2_na_km)) +
+#  coord_map(xlim = c(-25, 40), ylim = c(32, 72)) + scale_fill_continuous(na.value = "white") +
+ # labs(title="Emisije CO2 leta 2016",x="",y="") + theme(plot.title = element_text(hjust = 0.5)) 
 
-emisije_graf <- ggplot(data = emisije %>% filter(Drzava == c("Spain", "France", "Portugal", "Italy")),
-                 aes(x = Drzava, y = Gram_CO2_na_km)) + geom_boxplot() +
-  labs(title = "Emisije CO2") + theme(plot.title = element_text(hjust = 0.5))
+#emisije_graf <- ggplot(data = emisije %>% filter(Drzava == c("Spain", "France", "Portugal", "Italy")),
+  #               aes(x = Drzava, y = Gram_CO2_na_km)) + geom_boxplot() +
+ # labs(title = "Emisije CO2") + theme(plot.title = element_text(hjust = 0.5))
 
-emisije_slovenija <- ggplot(data = emisije %>% filter(Drzava == "Slovenia"), aes(x=Leto, y=Gram_CO2_na_km)) + 
-  geom_point() + geom_path() +
-  labs(title = "Emisije CO2 v Sloveniji") + theme(plot.title = element_text(hjust = 0.5))
+#emisije_slovenija <- ggplot(data = emisije %>% filter(Drzava == "Slovenia"), aes(x=Leto, y=Gram_CO2_na_km)) + 
+ # geom_point() + geom_path() +
+  #labs(title = "Emisije CO2 v Sloveniji") + theme(plot.title = element_text(hjust = 0.5))
 
 #Vrste motorja
 
