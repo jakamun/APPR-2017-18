@@ -35,11 +35,12 @@ preciscene_emisije <- function() {
                        na=c(""," ",":","-"), skip = 2, n_max=33)
   emisije <- gather(emisije, "2000", "2001", "2002", "2003", "2004", "2005", "2006","2007", "2008",
                     "2009", "2010", "2011", "2012", "2013", "2014", "2015", "2016", key = "Leto", value = "Gram_CO2_na_km")
-  emisije <- emisije %>% select(Drzava = "geo\\time", Leto, Gram_CO2_na_km) %>% filter(Gram_CO2_na_km != "NA")
+  emisije <- emisije %>% select(Drzava = "geo\\time", Leto, Gram_CO2_na_km) %>%
+    filter(Gram_CO2_na_km != "NA")
   emisije$Leto <- as.integer(emisije$Leto)
   return(emisije)
 }
-#emisije <- preciscene_emisije()
+emisije <- preciscene_emisije()
 
 st_na_1000_prebivalcev <- function() {
   st_na_1000_prebivalcev <- read_csv("podatki/st_na_1000_prebivalcev.csv", locale = locale(encoding = "cp1250"),

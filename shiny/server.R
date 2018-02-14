@@ -1,24 +1,51 @@
 library(shiny)
 
 shinyServer(function(input, output) {
-  output$druzine <- DT::renderDataTable({
-    dcast(druzine, obcina ~ velikost.druzine, value.var = "stevilo.druzin") %>%
-      rename(`Občina` = obcina)
+  
+  starost1 <- eventReactive(input$klik, 
+                           {starost %>% filter(Drzava == input$drzava, Leto == input$Leto)})
+  
+  output$graf <- renderPlot({
+    s <- ggplot(data = starost1(), aes(x=Starost, y=St_avtomobilov)) +
+      geom_col(fill = "cornflowerblue") + 
+      labs(x = "Starost", y = "Število avtomobilov", title = isolate({input$drzava})) +
+      theme(plot.title = element_text(hjust = 0.5))
+    
+    print(s)
+    
+    
   })
   
-  output$pokrajine <- renderUI(
-    selectInput("pokrajina", label="Izberi pokrajino",
-                choices=c("Vse", levels(obcine$pokrajina)))
-  )
-  output$naselja <- renderPlot({
-    main <- "Pogostost števila naselij"
-    if (!is.null(input$pokrajina) && input$pokrajina %in% levels(obcine$pokrajina)) {
-      t <- obcine %>% filter(pokrajina == input$pokrajina)
-      main <- paste(main, "v regiji", input$pokrajina)
-    } else {
-      t <- obcine
-    }
-    ggplot(t, aes(x = naselja)) + geom_histogram() +
-      ggtitle(main) + xlab("Število naselij") + ylab("Število občin")
+  output$teza <- renderPlot({
+    podatki <- teza %>% filter(Drzava == input$drz, Leto == input$leto)
+    g <- pie3D(podatki$St_avtomobilov ,labels = podatki$Teza,explode = 0.1, main = input$drz )
+    
+    print(g)
+    
   })
+  
+  output$box <- renderPlot({
+    b <- ggplot(data = goriva %>% filter(Drzava == input$izberi),
+                aes(x = Vrsta_goriva, y = St_avtomobilov)) +
+      geom_boxplot() + geom_point() +
+      labs(title = input$izberi, x = "Vrsta goriva", y = "Število avtomobilov") + 
+      theme(plot.title = element_text(hjust = 0.5))
+    
+    print(b)
+    
+  })
+  
+  motor1 <- eventReactive(input$clic, 
+                            {vrsta_motorja %>% filter(Drzava == input$cou, Leto == input$let)})
+  
+  output$wrap <- renderPlot({
+    a <- ggplot(data = motor1(), aes(x = Motor, y = Vrednost)) + geom_col() + facet_wrap(~Vrsta_goriva) +
+      labs(title = isolate({input$cou}), x = "Velikost motorja", y = "Število avtomobilov") + 
+      theme(plot.title = element_text(hjust = 0.5))
+    
+    print(a)
+    
+  })
+  
+  
 })

@@ -7,6 +7,7 @@ output:
     includes:
       in_header: lib/styles.sty
     latex_engine: xelatex
+runtime: shiny
 ---
 
 ```{r setup, echo=FALSE, results='hide', message=FALSE}
@@ -17,6 +18,7 @@ output:
 # Uvoz vseh potrebnih knjižnic
 source("lib/libraries.r", encoding = "UTF-8")
 ```
+![Mustang](avto.jpeg)
 
 # Izbira teme
 
@@ -93,30 +95,22 @@ V vizualizaciji sem se nnajprej posvetil avtomobilskim znamkam in hitro prišel 
 print(graf_primerjava)
 ```
 
+V Evropi vozimo bolj stare avtomobile, kar se od leta 2000 do leta 2015 ni bistveno spremenilo, nekoliko več novejših avtomobilov je vendar še vedno prevladujejo starejši avtomobili od 5 let. V nekaterih bolj bogatih državah je tudi veliko maljših avtomobilo, ki so stari med 2 in 5 let, medtem ko v bolj revnih državah, kot so naprimer baltske države prevladujejo predvsem starejši avtomobili od 10 let.
 
-Pri obravnavi starosti avtomobilov sem ugotovil da v Evropi prevladujejo starejši avtomobili, od 5 let naprej. 
-To se prikazal z grafom nemčije.
+Za tezo avtomobilov sem ugotovil da so v preteklosti prevladovali lažji avtomobili(lažji od 1000 kg), vendar se je to s časom spremenilo tako da danes prevladujejo srednje težki avtomobili(med tono in tono in pol). Prav tako se je dvignilo število najtežjih avtomobilov teh je namreč enako kot tistih lažjih. Dvigovanje teže avtomobilov se mi zdi logično saj so sodobni avtomobili vedno bolje opremljeni, kar daje dodatno težo avtomobilu. 
 
-```{r starost_nemcija, echo=FALSE, fig.align='center', fig.cap='Starost avtomonilov v Nemčiji'}
-print(starost_nemcija)
+Pri analizi goriv sem ugotovil, da prevladujejo vozila, ki jih poganja bencin potem so zelo razširjena tudi vozila na dizel, potem pa so daleč zadaj alternativne vrste goriv(najbol se uporablja plin), ki se praktično ne uporablajo v primerjavi z dizlom in bencinom. 
+
+Za velikosti motorjev sem ugotovil da so različne velikosti motorjev pri bencinskih avtomobilih kot pri dizelskih. Namreč pri bencinskih avtomobilih so najbol pogosti motorji, ki imajo volumen cilindra 1400 cm3 ali manj, na drugi strani pa imajo dizelski motorji nekoliko večjo prostornino cilndra in sicer med 1400 in 2000 cm3. Motorjev, ki bi imeli prostornino cilindra večjo od 2000 cm3 pa praktično ni tako dizelskih kot bencinskih motorjev.
+
+Vse podatke sem predstavil s shiny. 
+
+```{r shiny, echo=FALSE}
+shinyAppDir("shiny", options=list(width="100%", height=700))
 ```
+Spodnji zemljevid prikazuje število avtomobilov na 1000 prebivalcev. Iz zemljevida vidimo da imajo vzhodne in jogovhodne evropske države manše število avtomobilov. Menim da je temu tako, ker so te države manj razvite od zahodno evropskih držav in imajo prebivalci teh držav manj denarja in si posledično ne morejo toliko privoščit, kot ljudje, ki živijo na zahodu Evrope. 
 
-Za tezo avtomobilov sem ugotovil da so v preteklosti prevladovali lažžji avtomobili(lazji od 1000 kg), vendar se je to s časom spremenilo tako da danes prevladujejo srednje težki avtomobili(med tono in tono in pol). Prav tako se je dvignilo število najtežjih avtomobilov teh je namreč enako kot tistih lažjih. Dvigovanje teže avtomobilov se mi zdi logično saj so sodobni avtomobili vedno bolje opremljeni, kar daje dodatno težo avtomobilu. 
-Dodajam graf Francije, kjer se ta trend zelo dobro vidi. 
-
-```{r teza_francija, echo=FALSE, fig.align='center', fig.cap='Teža avtomobilov v Franciji'}
-print(teza_francija)
-```
-
-Pri anlizi goriv sem ugotovil, da sta bencin in dizel še vedno najbol uporabljani vrsti goriva medtem ko so alternativne vrste energije zelo nerazširjene.
-
-```{r goriva_sever, echo=FALSE, fig.align='center', fig.cap='Vrste goriv na severu Evrope'}
-print(goriva_sever)
-```
-
-Spodnji zemljevid prikazuje stevilo avtomobilov na 1000 prebivalcev. Iz zemljevida vidimo da imajo vzhodne in jogovhodne evropske države manše število avtomobilov. Menim da je temu tako, ker so te države manj razvite od zahodno evropskih držav in imajo prebivalci teh držav manj denarja in si posledično ne morejo toliko privoščit, kot ljudje, ki živijo na zahodu Evrope. 
-
-```{r zemljevid, echo=FALSE, fig.align='center', fig.cap='Zemljevid avtomobilov na 1000 prebivalcev'}
+```{r zemljevid, echo=FALSE, warning = FALSE, fig.align='center'}
 ggplot() + geom_polygon(data = left_join(evropa, st_na_1000_prebivalcev %>% filter(Leto == 2012),
                                          by = c("SOVEREIGNT" = "Drzava")), 
                         aes(x = long, y = lat, group = group, fill = Stevilo)) + 
@@ -124,7 +118,25 @@ ggplot() + geom_polygon(data = left_join(evropa, st_na_1000_prebivalcev %>% filt
   labs(title="Stevilo avtomobilov \n na 1000 prebivalcev leta 2012",x="",y="") +
   theme(plot.title = element_text(hjust = 0.5))
 ```
+Izpusti CO2 na kilometer od leta 2000 do leta 2015 vztrajno padajo. Iz spodnjega grafa pa lahko razberemo, da je v zahodno evropskih državah veliko nižji izpust CO2 kot pa v vzhodno eevropskih državah. Kar je ponovno verjetno posledica razvitosti držav. Pri čemer so izjeme kot je na primer Nemčija, ki ima zelo velike izpuste CO2. 
 
+```{r zemljevid_emisije, echo=FALSE, fig.align='center'}
+print(zemljevid_emisije)
+```
+
+Z napredno analizo sem poskušal napovedati kakšne bodo značilnosti avtomobilov v prihodnjih letih. Za težo avtomobilov sem ugotovil da bodo avtomobili ki so težji od 1500 kg vedno bolj pogosti prav tako tisti z težo med 1250 in 1500 kilogrami. Medtem ko bodo tisti lažji od 1200 kg vedno manj pogosti.
+
+Za starost avtomobilov sem ugotovil da bo število novih avtomobilov zraslo, to so tisti mlajši od dveh let, in število starejših od 10 let bo zraslo, medtem ko se število tistih avtomobilov, ki so stari med dvemi in desetimi leti ne bo bistveno spreminjalo.
+
+Pri gorivih sem ugotovil da v zadnjih desetih petnajstih letih uporaba bencina v avtomobilizmu zelo pada medtem, ko uporaba dizla in alternativnih virov goriv, kot je plin in elektrika, raste.
+
+Za velikosti motorjev pa velja da bencinski motorji so v zadnjih letih bolj popularni tisti z manjšim volumnom, torej tisti z volumnom bata manjšega od 1440 cm3 in gre ta trend pričakovati tudi v prihodnjih letih. Medtem ko za dizelske motorje velja ravno obratno, tisti z manjšo prostornino izginjajo in tisti z večjo so vedno bolj pogosti.
+
+Vse ugotovitve sem predstavil tudi grafično, ki si jih lahko ogledate spodaj.
+
+```{r shiny2, echo=FALSE}
+shinyAppDir("analiza", options=list(width="100%", height=800))
+```
 
 
 

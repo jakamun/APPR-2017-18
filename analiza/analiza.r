@@ -1,11 +1,16 @@
 # 4. faza: Analiza podatkov
 
-podatki <- obcine %>% transmute(obcina, povrsina, gostota,
-                                gostota.naselij = naselja/povrsina) %>%
-  left_join(povprecja, by = "obcina")
-row.names(podatki) <- podatki$obcina
-podatki$obcina <- NULL
+p <- teza %>% filter(Drzava == "Finland", Teza == "1000-1249 kg")
 
-# Število skupin
-n <- 5
-skupine <- hclust(dist(scale(podatki))) %>% cutree(n)
+h <- ggplot(p, aes(x=Leto, y=St_avtomobilov)) + geom_point()
+
+mls <- loess(data = p, St_avtomobilov ~ Leto)
+h + geom_smooth(method = "loess")
+mgam <- gam(data = p, St_avtomobilov ~ s(Leto))
+h + geom_smooth(method = "gam", formula = y ~ s(x))
+
+prihodnost <- data.frame(Leto=c(2018,2019,2020))
+View(prihodnost)
+predict(mgam, prihodnost)
+napoved <- prihodnost %>% mutate(St_avtomobilov=predict(mgam, .))
+View(napoved)
